@@ -38,7 +38,7 @@ class ProxyTest extends BaseContainerTest
 
         if (PHP_VERSION_ID >= 80400) {
             $this->assertTrue(
-                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                (new \ReflectionClass(LazyDependency::class))->isUninitializedLazyObject(
                     $proxy
                 )
             );

@@ -62,7 +62,7 @@ class ContainerInjectOnTest extends BaseContainerTest
 
         if (PHP_VERSION_ID >= 80400) {
             self::assertTrue(
-                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                (new \ReflectionClass(LazyDependency::class))->isUninitializedLazyObject(
                     $obj->property5
                 )
             );
@@ -89,7 +89,7 @@ class ContainerInjectOnTest extends BaseContainerTest
 
         if (PHP_VERSION_ID >= 80400) {
             self::assertTrue(
-                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                (new \ReflectionClass(LazyDependency::class))->isUninitializedLazyObject(
                     $obj->method4Param1
                 )
             );
@@ -155,7 +155,7 @@ class ContainerInjectOnTest extends BaseContainerTest
 
         if (PHP_VERSION_ID >= 80400) {
             self::assertTrue(
-                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                (new \ReflectionClass(LazyDependency::class))->isUninitializedLazyObject(
                     $obj->property5
                 )
             );
@@ -182,7 +182,7 @@ class ContainerInjectOnTest extends BaseContainerTest
 
         if (PHP_VERSION_ID >= 80400) {
             self::assertTrue(
-                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                (new \ReflectionClass(LazyDependency::class))->isUninitializedLazyObject(
                     $obj->method4Param1
                 )
             );
