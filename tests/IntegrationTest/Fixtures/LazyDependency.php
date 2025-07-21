@@ -12,8 +12,10 @@ use DI\Attribute\Injectable;
 #[Injectable(lazy: true)]
 class LazyDependency
 {
+    private bool $value = true;
+
     public function getValue(): bool
     {
-        return true;
+        return $this->value;
     }
 }

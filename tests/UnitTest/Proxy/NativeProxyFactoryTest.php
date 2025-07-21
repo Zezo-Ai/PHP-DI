@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace DI\Test\UnitTest\Proxy;
 
-use DI\Proxy\ProxyFactory;
+use DI\Proxy\NativeProxyFactory;
 use DI\Test\UnitTest\Proxy\Fixtures\ClassToProxy;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \DI\Proxy\ProxyFactory
+ * @covers \DI\Proxy\NativeProxyFactory
+ * @requires PHP 8.4
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\DI\Proxy\ProxyFactory::class)]
-class ProxyFactoryTest extends TestCase
+#[\PHPUnit\Framework\Attributes\CoversClass(\DI\Proxy\NativeProxyFactory::class)]
+class NativeProxyFactoryTest extends TestCase
 {
     /**
      * @test
      */
     #[\PHPUnit\Framework\Attributes\Test]
-    public function should_create_lazy_proxies()
+    public function should_create_native_lazy_proxies()
     {
-        $factory = new ProxyFactory;
+        $factory = new NativeProxyFactory;
 
         $instance = new ClassToProxy();
         $initialized = false;
@@ -39,6 +40,5 @@ class ProxyFactoryTest extends TestCase
         $proxy->foo();
 
         $this->assertTrue($initialized);
-        $this->assertSame($instance, $proxy->getInstance());
     }
 }

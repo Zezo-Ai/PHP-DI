@@ -22,8 +22,8 @@ interface DefinitionResolver
      * Resolve a definition to a value.
      *
      * @param Definition $definition Object that defines how the value should be obtained.
-     * @psalm-param T $definition
      * @param array      $parameters Optional parameters to use to build the entry.
+     * @psalm-param T $definition
      * @return mixed Value obtained from the definition.
      *
      * @throws InvalidDefinition If the definition cannot be resolved.
@@ -35,8 +35,8 @@ interface DefinitionResolver
      * Check if a definition can be resolved.
      *
      * @param Definition $definition Object that defines how the value should be obtained.
-     * @psalm-param T $definition
      * @param array      $parameters Optional parameters to use to build the entry.
+     * @psalm-param T $definition
      */
     public function isResolvable(Definition $definition, array $parameters = []) : bool;
 }
