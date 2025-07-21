@@ -9,7 +9,7 @@ This feature should not be confused with lazy initialization of objects: **PHP-D
 
 Lazy injection goes further than this: it allows to defer the creation of an object's dependencies to the moment when they are actually used, not before.
 
-**Warning: this feature should only be used exceptionally, please read the "When to use" section at the end of this page.**
+**Note: Be sure to check the "When To Use" section at the end of this page to see if lazy injection is appropriate for your use case.**
 
 ## Example
 
@@ -54,7 +54,7 @@ If you define an object as "lazy", PHP-DI will inject:
 
 The proxy is a special kind of object that **looks and behaves exactly like the original object**, so you can't tell the difference. The proxy will instantiate the original object only when needed.
 
-Creating a proxy is complex. For this, PHP-DI relies on [ProxyManager](https://github.com/Ocramius/ProxyManager), the (amazing) library used by Doctrine, Symfony and Zend.
+On PHP 8.4 and newer, PHP-DI uses the native language support for creating high-performance lazy proxy objects. On PHP versions older than 8.4, PHP-DI relies on [ProxyManager](https://github.com/Ocramius/ProxyManager), the (amazing) library used by Doctrine, Symfony and Zend.
 
 Let's illustrate that with an example. For the sake of simplicity we will not inject a lazy object but we will ask the container to return one:
 
@@ -85,7 +85,9 @@ You can define an object as "lazy". If it is injected as a dependency, then a pr
 
 ### Installation
 
-Lazy injection requires the [Ocramius/ProxyManager](https://github.com/Ocramius/ProxyManager) library. This library is not installed by default with PHP-DI, you need to require it. However, you should install the fork that is compatible with PHP 8.1:
+**If using PHP 8.4 or newer**, no additional steps are required to be able to use lazy injection. PHP-DI takes advantage of the native in-language support for lazy object creation.
+
+**On PHP versions older than 8.4**, lazy injection requires the [Ocramius/ProxyManager](https://github.com/Ocramius/ProxyManager) library. This library is not installed by default with PHP-DI, you need to require it. However, you should install the fork that is compatible with PHP 8.1:
 
 ````
 composer require friendsofphp/proxy-manager-lts
@@ -122,11 +124,13 @@ $containerPHP->set('foo', \DI\create('MyClass')->lazy());
 
 ## When to use
 
-Lazy injection requires to create proxy objects for each object you declare as `lazy`. It is not recommended to use this feature more than a few times in one application.
+If using PHP 8.4 or newer, PHP-DI will use native lazy object creation, which offers excellent performance. For older versions of PHP, lazy injection requires to create proxy objects for each object you declare as `lazy`; it is not recommended to use this feature more than a few times in one application.
 
 While proxies are extremely optimized, they are only worth it if the object you define as lazy has a constructor that takes some time (e.g. connects to a database, writes to a file, etc.).
 
-## Optimizing performances
+## Using ProxyManager (PHP 8.3 or older)
+
+### Optimizing performances
 
 PHP-DI needs to generate proxies of the classes you mark as "*lazy*".
 
