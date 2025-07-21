@@ -56,12 +56,23 @@ class ContainerInjectOnTest extends BaseContainerTest
         self::assertInstanceOf(Implementation1::class, $obj->property2);
         self::assertInstanceOf(Class2::class, $obj->property3);
         self::assertEquals('bar', $obj->property4);
+
         // Lazy injection
-        /** @var LazyDependency|LazyLoadingInterface $proxy */
-        $proxy = $obj->property5;
-        self::assertInstanceOf(LazyDependency::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
-        self::assertFalse($proxy->isProxyInitialized());
+        self::assertInstanceOf(LazyDependency::class, $obj->property5);
+
+        if (PHP_VERSION_ID >= 80400) {
+            self::assertTrue(
+                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                    $obj->property5
+                )
+            );
+        } else {
+            /** @var LazyDependency|LazyLoadingInterface $proxy */
+            $proxy = $obj->property5;
+
+            self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
+            self::assertFalse($proxy->isProxyInitialized());
+        }
 
         // Test method injections
 
@@ -72,13 +83,25 @@ class ContainerInjectOnTest extends BaseContainerTest
         // Method 3 (defining parameters with the attribute)
         self::assertInstanceOf(Class2::class, $obj->method3Param1);
         self::assertEquals('bar', $obj->method3Param2);
+
         // Method 4 (lazy)
         self::assertInstanceOf(LazyDependency::class, $obj->method4Param1);
-        self::assertInstanceOf(LazyLoadingInterface::class, $obj->method4Param1);
-        // Lazy injection
-        /** @var LazyDependency|LazyLoadingInterface $proxy */
-        $proxy = $obj->method4Param1;
-        self::assertFalse($proxy->isProxyInitialized());
+
+        if (PHP_VERSION_ID >= 80400) {
+            self::assertTrue(
+                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                    $obj->method4Param1
+                )
+            );
+        } else {
+            self::assertInstanceOf(LazyLoadingInterface::class, $obj->method4Param1);
+
+            // Lazy injection
+            /** @var LazyDependency|LazyLoadingInterface $proxy */
+            $proxy = $obj->method4Param1;
+
+            self::assertFalse($proxy->isProxyInitialized());
+        }
     }
 
     /**
@@ -127,12 +150,22 @@ class ContainerInjectOnTest extends BaseContainerTest
         self::assertInstanceOf(Implementation1::class, $obj->property2);
         self::assertInstanceOf(Class2::class, $obj->property3);
         self::assertEquals('bar', $obj->property4);
-        // Lazy injection
-        /** @var LazyDependency|LazyLoadingInterface $proxy */
-        $proxy = $obj->property5;
-        self::assertInstanceOf(LazyDependency::class, $proxy);
-        self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
-        self::assertFalse($proxy->isProxyInitialized());
+
+        self::assertInstanceOf(LazyDependency::class, $obj->property5);
+
+        if (PHP_VERSION_ID >= 80400) {
+            self::assertTrue(
+                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                    $obj->property5
+                )
+            );
+        } else {
+            /** @var LazyDependency|LazyLoadingInterface $proxy */
+            $proxy = $obj->property5;
+
+            self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
+            self::assertFalse($proxy->isProxyInitialized());
+        }
 
         // Test method injections
 
@@ -143,13 +176,23 @@ class ContainerInjectOnTest extends BaseContainerTest
         // Method 3 (defining parameters with the attribute)
         self::assertInstanceOf(Class2::class, $obj->method3Param1);
         self::assertEquals('bar', $obj->method3Param2);
+
         // Method 4 (lazy)
         self::assertInstanceOf(LazyDependency::class, $obj->method4Param1);
-        self::assertInstanceOf(LazyLoadingInterface::class, $obj->method4Param1);
-        // Lazy injection
-        /** @var LazyDependency|LazyLoadingInterface $proxy */
-        $proxy = $obj->method4Param1;
-        self::assertFalse($proxy->isProxyInitialized());
+
+        if (PHP_VERSION_ID >= 80400) {
+            self::assertTrue(
+                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                    $obj->method4Param1
+                )
+            );
+        } else {
+            /** @var LazyDependency|LazyLoadingInterface $proxy */
+            $proxy = $obj->method4Param1;
+
+            self::assertInstanceOf(LazyLoadingInterface::class, $proxy);
+            self::assertFalse($proxy->isProxyInitialized());
+        }
     }
 
     /**

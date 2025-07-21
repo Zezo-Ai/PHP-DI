@@ -64,8 +64,12 @@ class AutowireDefinitionTest extends BaseContainerTest
         self::assertNull($object->typedOptionalValue);
         self::assertEquals('bar', $object->value);
         self::assertInstanceOf(LazyService::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
+
         self::assertNull($object->unknownTypedAndOptional);
         self::assertEquals('hello', $object->optionalValue);
     }
@@ -358,10 +362,17 @@ class AutowireDefinitionTest extends BaseContainerTest
 
         $this->assertEntryIsCompiled($container, NullableConstructorParameter::class);
         self::assertInstanceOf(NullableConstructorParameter::class, $object);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object);
-        self::assertFalse($object->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object);
+            self::assertFalse($object->isProxyInitialized());
+        }
+
         self::assertEquals('bar', $object->bar);
-        self::assertTrue($object->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertTrue($object->isProxyInitialized());
+        }
     }
 
     /**

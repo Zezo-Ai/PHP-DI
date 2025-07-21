@@ -6,18 +6,22 @@ namespace DI\Test\UnitTest\Proxy;
 
 use DI\Proxy\ProxyFactory;
 use DI\Test\UnitTest\Proxy\Fixtures\ClassToProxy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DI\Proxy\ProxyFactory
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\DI\Proxy\ProxyFactory::class)]
+#[CoversClass(\DI\Proxy\ProxyFactory::class)]
 class ProxyFactoryTest extends TestCase
 {
     /**
      * @test
      */
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
+    #[RequiresPhp('< 8.4')]
     public function should_create_lazy_proxies()
     {
         $factory = new ProxyFactory;

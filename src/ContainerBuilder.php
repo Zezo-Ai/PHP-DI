@@ -61,11 +61,6 @@ class ContainerBuilder
     private ?string $proxyDirectory = null;
 
     /**
-     * If true, will enable the PHP 8.4+ native proxy generator.
-     */
-    private bool $useNativeLazyObjects = false;
-
-    /**
      * If PHP-DI is wrapped in another container, this references the wrapper.
      */
     private ?ContainerInterface $wrapperContainer = null;
@@ -139,11 +134,9 @@ class ContainerBuilder
             $source = new SourceCache($source, $this->sourceCacheNamespace);
         }
 
-        if ($this->useNativeLazyObjects) {
-            $proxyFactory = new NativeProxyFactory();
-        } else {
-            $proxyFactory = new ProxyFactory($this->proxyDirectory);
-        }
+        $proxyFactory = (\PHP_VERSION_ID >= 80400)
+            ? new NativeProxyFactory()
+            : new ProxyFactory($this->proxyDirectory);
 
         $this->locked = true;
 
@@ -258,30 +251,6 @@ class ContainerBuilder
             );
         }
         $this->proxyDirectory = $writeToFile ? $proxyDirectory : null;
-
-        return $this;
-    }
-
-    /**
-     * Use PHP 8.4+'s native lazy object generation for lazy-loading proxies.
-     *
-     * @see https://php-di.org/doc/lazy-injection.html
-     *
-     * @param bool $useNativeLazyObjects If true, prefer native lazy objects if available.
-     */
-    public function useNativeLazyObjects(bool $useNativeLazyObjects) : self
-    {
-        $this->ensureNotLocked();
-
-        if (\PHP_VERSION_ID < 80400 && $useNativeLazyObjects) {
-            throw new \LogicException('Lazy loading proxies require PHP 8.4 or higher.');
-        }
-
-        $this->useNativeLazyObjects = $useNativeLazyObjects;
-
-        if ($useNativeLazyObjects) {
-            $this->proxyDirectory = null;
-        }
 
         return $this;
     }

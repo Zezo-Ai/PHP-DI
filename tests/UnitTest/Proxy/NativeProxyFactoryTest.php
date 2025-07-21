@@ -6,19 +6,23 @@ namespace DI\Test\UnitTest\Proxy;
 
 use DI\Proxy\NativeProxyFactory;
 use DI\Test\UnitTest\Proxy\Fixtures\ClassToProxy;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \DI\Proxy\NativeProxyFactory
  * @requires PHP 8.4
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(\DI\Proxy\NativeProxyFactory::class)]
+#[CoversClass(\DI\Proxy\NativeProxyFactory::class)]
 class NativeProxyFactoryTest extends TestCase
 {
     /**
      * @test
      */
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
+    #[RequiresPhp('>= 8.4')]
     public function should_create_native_lazy_proxies()
     {
         $factory = new NativeProxyFactory;

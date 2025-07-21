@@ -62,8 +62,12 @@ class AttributeTest extends BaseContainerTest
         self::assertNull($object->typedOptionalValueDefaultNull);
         self::assertEquals('bar', $object->value);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
+
         self::assertSame($container->get('attribute'), $object->attribute);
         self::assertEquals('hello', $object->optionalValue);
     }
@@ -101,8 +105,11 @@ class AttributeTest extends BaseContainerTest
         self::assertEquals('bar', $object->value2);
         self::assertInstanceOf(\stdClass::class, $object->entry);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
     }
 
     /**
@@ -126,8 +133,12 @@ class AttributeTest extends BaseContainerTest
         self::assertNull($object->typedOptionalValueDefaultNull);
         self::assertEquals('bar', $object->value);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
+
         self::assertSame($container->get('attribute'), $object->attribute);
         self::assertEquals('hello', $object->optionalValue);
     }

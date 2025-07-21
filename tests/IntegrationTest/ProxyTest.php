@@ -8,6 +8,9 @@ use DI\ContainerBuilder;
 use DI\Test\IntegrationTest\Fixtures\LazyDependency;
 use DI\Test\IntegrationTest\Fixtures\ProxyTest\A;
 use DI\Test\IntegrationTest\Fixtures\ProxyTest\B;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\Test;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
 /**
@@ -19,8 +22,8 @@ class ProxyTest extends BaseContainerTest
      * @test
      * @dataProvider provideContainer
      */
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideContainer')]
+    #[Test]
+    #[DataProvider('provideContainer')]
     public function container_can_create_lazy_objects(ContainerBuilder $builder)
     {
         $builder->useAutowiring(false);
@@ -30,16 +33,26 @@ class ProxyTest extends BaseContainerTest
         ]);
 
         $proxy = $builder->build()->get('foo');
-        $this->assertInstanceOf(LazyLoadingInterface::class, $proxy);
+
         $this->assertInstanceOf(LazyDependency::class, $proxy);
+
+        if (PHP_VERSION_ID >= 80400) {
+            $this->assertTrue(
+                new \ReflectionClass(LazyDependency::class)->isUninitializedLazyObject(
+                    $proxy
+                )
+            );
+        } else {
+            $this->assertInstanceOf(LazyLoadingInterface::class, $proxy);
+        }
     }
 
     /**
      * @test
      * @dataProvider provideContainer
      */
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideContainer')]
+    #[Test]
+    #[DataProvider('provideContainer')]
     public function lazy_services_resolve_to_the_same_instance(ContainerBuilder $builder)
     {
         $builder->useAutowiring(false);
@@ -52,9 +65,11 @@ class ProxyTest extends BaseContainerTest
         /** @var LazyDependency $proxy */
         $proxy = $container->get('foo');
         $this->assertSame($proxy, $container->get('foo'));
+
         // Resolve the proxy and check again
         /** @noinspection PhpExpressionResultUnusedInspection */
         $proxy->getValue();
+
         $this->assertSame($proxy, $container->get('foo'));
     }
 
@@ -62,8 +77,8 @@ class ProxyTest extends BaseContainerTest
      * @test
      * @dataProvider provideContainer
      */
-    #[\PHPUnit\Framework\Attributes\Test]
-    #[\PHPUnit\Framework\Attributes\DataProvider('provideContainer')]
+    #[Test]
+    #[DataProvider('provideContainer')]
     public function dependencies_of_proxies_are_resolved_once(ContainerBuilder $builder)
     {
         $builder->useAutowiring(false);

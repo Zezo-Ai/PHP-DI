@@ -28,11 +28,7 @@ class NativeProxyFactory implements ProxyFactoryInterface
 
         $reflector = new \ReflectionClass($className);
 
-        return $reflector->newLazyProxy(
-            function () use ($createFunction) {
-                return $createFunction();
-            }
-        );
+        return $reflector->newLazyProxy($createFunction);
     }
 
     public function generateProxyClass(string $className) : void
