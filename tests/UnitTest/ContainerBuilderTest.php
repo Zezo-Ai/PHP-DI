@@ -12,6 +12,7 @@ use DI\Definition\ValueDefinition;
 use DI\Test\IntegrationTest\BaseContainerTest;
 use DI\Test\UnitTest\Fixtures\FakeContainer;
 use EasyMock\EasyMock;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -267,6 +268,7 @@ class ContainerBuilderTest extends TestCase
      * @test
      */
     #[\PHPUnit\Framework\Attributes\Test]
+    #[RequiresPhp('< 8.4')]
     public function should_create_proxies()
     {
         $builder = new ContainerBuilder(FakeContainer::class);

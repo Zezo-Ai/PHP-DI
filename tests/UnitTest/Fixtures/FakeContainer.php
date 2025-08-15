@@ -6,6 +6,7 @@ namespace DI\Test\UnitTest\Fixtures;
 
 use DI\Definition\Source\DefinitionSource;
 use DI\Proxy\ProxyFactory;
+use DI\Proxy\ProxyFactoryInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -21,7 +22,7 @@ class FakeContainer
     public $definitionSource;
 
     /**
-     * @var ProxyFactory
+     * @var ProxyFactoryInterface
      */
     public $proxyFactory;
 
@@ -32,7 +33,7 @@ class FakeContainer
 
     public function __construct(
         DefinitionSource $definitionSource,
-        ProxyFactory $proxyFactory,
+        ProxyFactoryInterface $proxyFactory,
         ?ContainerInterface $wrapperContainer = null,
     ) {
         $this->definitionSource = $definitionSource;

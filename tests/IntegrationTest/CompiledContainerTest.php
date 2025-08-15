@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DI\Test\IntegrationTest;
 
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use function DI\autowire;
 use DI\ContainerBuilder;
 use function DI\create;
@@ -170,6 +171,7 @@ class CompiledContainerTest extends BaseContainerTest
      * @test
      */
     #[\PHPUnit\Framework\Attributes\Test]
+    #[RequiresPhp('< 8.4')]
     public function proxy_classes_can_be_pregenerated_at_compile_time()
     {
         $builder = new ContainerBuilder;

@@ -85,8 +85,12 @@ class CreateDefinitionTest extends BaseContainerTest
         self::assertEquals(new \stdClass, $object->typedValue);
         self::assertEquals(new \stdClass, $object->typedOptionalValue);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
+
         self::assertEquals('hello', $object->optionalValue);
     }
 
@@ -114,8 +118,11 @@ class CreateDefinitionTest extends BaseContainerTest
         self::assertEquals('foo', $object->value);
         self::assertEquals('bar', $object->entry);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
     }
 
     /**
@@ -146,8 +153,12 @@ class CreateDefinitionTest extends BaseContainerTest
         self::assertEquals(new \stdClass, $object->typedValue);
         self::assertEquals(new \stdClass, $object->typedOptionalValue);
         self::assertInstanceOf(\stdClass::class, $object->lazyService);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
-        self::assertFalse($object->lazyService->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object->lazyService);
+            self::assertFalse($object->lazyService->isProxyInitialized());
+        }
+
         self::assertEquals('hello', $object->optionalValue);
     }
 
@@ -249,10 +260,17 @@ class CreateDefinitionTest extends BaseContainerTest
 
         self::assertEntryIsCompiled($container, Property::class);
         self::assertInstanceOf(Property::class, $object);
-        self::assertInstanceOf(LazyLoadingInterface::class, $object);
-        self::assertFalse($object->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertInstanceOf(LazyLoadingInterface::class, $object);
+            self::assertFalse($object->isProxyInitialized());
+        }
+
         self::assertEquals('bar', $object->foo);
-        self::assertTrue($object->isProxyInitialized());
+
+        if (PHP_VERSION_ID < 80400) {
+            self::assertTrue($object->isProxyInitialized());
+        }
     }
 
     /**
